@@ -1,86 +1,197 @@
+"""Builds cycle.svg. Every text is width-checked against its box (conservative fonts) so nothing overflows."""
 import os
-W,H=1190,760
-SANS="Inter,'Segoe UI',Helvetica,Arial,sans-serif"
-MONO="ui-monospace,SFMono-Regular,Consolas,Menlo,monospace"
-F='font-family="%s"'%SANS
-DASH='stroke-dasharray="5 4"'
-o=[];a=o.append
-a('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="Delivery cycle: refine, build and evaluate, ship, investigate with data, foundations">'%(W,H,W,H))
-mk=""
-for i,c in (("ar","#57606a"),("ab","#1F6FEB"),("at","#0E8A8A"),("ag","#2EA44F"),("ap","#6B4FBB"),("ao","#E36209")):
-    mk+='<marker id="%s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="%s"/></marker>'%(i,c)
-a('<defs><filter id="sh" x="-10%%" y="-10%%" width="120%%" height="130%%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1f2328" flood-opacity="0.10"/></filter><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F6F8FA"/></linearGradient>%s</defs>'%mk)
-a('<rect x="0.5" y="0.5" width="%d" height="%d" rx="18" fill="url(#bg)" stroke="#D0D7DE"/>'%(W-1,H-1))
-a('<text x="40" y="48" %s font-size="22" font-weight="700" fill="#1f2328">Delivery cycle</text>'%F)
-a('<text x="40" y="72" %s font-size="13" fill="#57606a">From a vague ticket to a production release. Independent agents check the work. A human takes every irreversible step.</text>'%F)
-def panel(x,y,w,h,n,t,c,f):
-    a('<rect x="%d" y="%d" width="%d" height="%d" rx="14" fill="%s" stroke="%s" stroke-opacity="0.35"/>'%(x,y,w,h,f,c))
-    a('<circle cx="%d" cy="%d" r="12" fill="%s"/><text x="%d" y="%d" %s font-size="13" font-weight="700" fill="#fff" text-anchor="middle">%s</text>'%(x+26,y+28,c,x+26,y+33,F,n))
-    a('<text x="%d" y="%d" %s font-size="12.5" font-weight="700" letter-spacing="1.2" fill="%s">%s</text>'%(x+46,y+33,F,c,t))
-def card(x,y,w,h,t,s,c,mono=True,fill="#fff"):
-    ff=MONO if mono else SANS
-    a('<rect x="%d" y="%d" width="%d" height="%d" rx="10" fill="%s" stroke="%s" stroke-opacity="0.55" filter="url(#sh)"/>'%(x,y,w,h,fill,c))
-    a('<rect x="%d" y="%d" width="4" height="%d" rx="2" fill="%s"/>'%(x+1,y+10,h-20,c))
-    ty=y+24 if s else y+h/2+5
-    a('<text x="%d" y="%s" font-family="%s" font-size="15" font-weight="700" fill="#1f2328">%s</text>'%(x+18,ty,ff,t))
-    if s:
-        for i,p in enumerate(s.split("|")):
-            a('<text x="%d" y="%d" %s font-size="12" fill="#57606a">%s</text>'%(x+18,y+42+i*15,F,p))
-def line(d,m="ar",dash=False,c="#57606a"):
-    a('<path d="%s" fill="none" stroke="%s" stroke-width="1.6" %s marker-end="url(#%s)"/>'%(d,c,DASH if dash else "",m))
-def label(x,y,t,c,anchor="middle"):
-    a('<text x="%d" y="%d" %s font-size="11.5" font-weight="600" fill="%s" text-anchor="%s">%s</text>'%(x,y,F,c,anchor,t))
-OR,BL,TL,PU,GR,GY="#E36209","#1F6FEB","#0E8A8A","#6B4FBB","#2EA44F","#57606a"
-# panels row
-panel(40,100,200,300,"1","REFINE",OR,"#FFF8F0")
-panel(270,100,420,300,"2","BUILD, EVALUATE, IMPROVE",BL,"#F3F8FF")
-panel(720,100,430,300,"4","SHIP",PU,"#F8F4FF")
-def proc(y,t):
-    a('<rect x="60" y="%d" width="160" height="34" rx="17" fill="#fff" stroke="%s" stroke-dasharray="4 3"/><text x="140" y="%d" %s font-size="12" fill="#57606a" text-anchor="middle">%s</text>'%(y,OR,y+22,F,t))
-proc(150,"Epic / feature")
-proc(194,"Spec: agent drafts")
-proc(238,"Tickets: breakdown")
-line("M140 184 L140 192","ao",False,OR)
-line("M140 228 L140 236","ao",False,OR)
-line("M140 272 L140 296","ao",False,OR)
-card(60,298,160,64,"ticket-refine","Spec + criteria|User approves draft",OR)
-label(140,386,"dashed: process, no skill yet",OR)
-card(290,156,380,58,"implement-with-score-gate","Worktree, implement, fresh subagent scores 0-10",BL)
-card(290,230,380,58,"verify-against-criteria","Post-task hook: read-only verdict + evidence",BL)
-card(290,304,380,58,"live-env-local-test","Post-task hook: real environment, local build",BL)
-line("M220 330 C255 330 255 185 288 185","ao",False,OR)
-line("M670 259 L682 259 L682 185 L672 185","ab",True,BL)
-label(530,386,"not passing: findings go back, new scorer each round","#1F6FEB")
-a('<rect x="740" y="156" width="390" height="44" rx="22" fill="#6B4FBB" filter="url(#sh)"/><text x="935" y="183" %s font-size="14" font-weight="700" fill="#fff" text-anchor="middle">You review and merge the PR</text>'%F)
-card(740,224,185,64,"deploy-to-staging","Explicit tag, GitOps sync|You confirm",PU)
-card(945,224,185,64,"prod-release-gate","Stop after each step|Canary go / no-go",PU)
-line("M670 333 C710 333 710 178 738 178","ab",False,BL)
-label(712,320,"PASS",BL,"start")
-line("M935 200 L835 222","ap",False,PU)
-line("M925 256 L943 256","ap",False,PU)
-a('<text x="935" y="330" %s font-size="12" fill="#57606a" text-anchor="middle">Production actions are always done by a human.</text>'%F)
-# batch band
-a('<rect x="270" y="420" width="420" height="84" rx="14" fill="#F1FAFA" stroke="%s" stroke-opacity="0.45"/>'%TL)
-a('<circle cx="296" cy="448" r="12" fill="%s"/><text x="296" y="453" %s font-size="13" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="316" y="453" %s font-size="12.5" font-weight="700" letter-spacing="1.2" fill="%s">RUN IT AT SCALE</text>'%(TL,F,F,TL))
-a('<text x="290" y="478" font-family="%s" font-size="15" font-weight="700" fill="#1f2328">issue-batch-drain</text>'%MONO)
-a('<text x="290" y="496" %s font-size="12" fill="#57606a">One group at a time: fresh implementer, then fresh verifier</text>'%F)
-line("M480 418 L480 402","at",True,TL)
-label(492,413,"each group runs box 2",TL,"start")
-# investigate
-panel(40,530,1110,84,"5","INVESTIGATE WITH DATA",GR,"#F3FBF4")
-card(60,566,250,38,"log-analysis","",GR)
-a('<text x="330" y="591" %s font-size="12.5" fill="#57606a">debug  ·  size a change  ·  check an assumption  ·  evidence for a proposal  ·  baseline  ·  monitor  ·  A/B tests</text>'%F)
-line("M140 530 L140 402","ag",True,GR)
-label(152,470,"evidence for specs and design",GR,"start")
-line("M935 530 L935 402","ag",True,GR)
-label(947,470,"canary and debugging",GR,"start")
-line("M1060 402 L1060 528","ag",True,GR)
-label(1072,470,"monitor, A/B results",GR,"start")
-# foundations
-panel(40,640,1110,84,"6","FOUNDATIONS",GY,"#F6F8FA")
-card(60,676,150,38,"wrap-up","",GY)
-card(226,676,270,38,"agent-context-template","",GY)
-a('<text x="516" y="701" %s font-size="12.5" fill="#57606a">every session ends with what worked saved as memory; every repo starts with the right rules</text>'%F)
-a('</svg>')
-out=os.path.join(os.path.dirname(os.path.abspath(__file__)),"cycle.svg")
-open(out,"w",encoding="utf-8").write("\n".join(o))
+
+try:
+    from PIL import ImageFont
+except ImportError:  # checks skipped if Pillow is missing
+    ImageFont = None
+
+W, H = 1280, 780
+SANS = "Inter,'Segoe UI',Helvetica,Arial,sans-serif"
+MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
+INK, MUTED, LINE = "#1f2328", "#57606a", "#8c959f"
+C = {"refine": "#E36209", "build": "#1F6FEB", "scale": "#0E8A8A", "ship": "#6B4FBB", "data": "#2EA44F", "base": "#57606a"}
+TINT = {"refine": "#FFF8F2", "build": "#F4F8FF", "scale": "#F0FAFA", "ship": "#F8F5FF", "data": "#F2FBF4", "base": "#F6F8FA"}
+o = []
+a = o.append
+problems = []
+
+_fonts = {}
+
+
+def width(text, size, bold=False, mono=False):
+    if ImageFont is None:
+        return 0
+    name = ("courbd.ttf" if mono else ("arialbd.ttf" if bold else "arial.ttf"))
+    key = (name, size)
+    if key not in _fonts:
+        _fonts[key] = ImageFont.truetype(os.path.join(os.environ.get("WINDIR", "C:/Windows"), "Fonts", name), int(size * 4))
+    return _fonts[key].getlength(text) / 4
+
+
+def check(text, size, maxw, bold=False, mono=False):
+    w = width(text, size, bold, mono)
+    if w > maxw:
+        problems.append("%r: %.0f > %.0f" % (text, w, maxw))
+
+
+def text(x, y, s, size=12, color=MUTED, bold=False, mono=False, anchor="start", maxw=None, spacing=None):
+    if maxw:
+        check(s, size, maxw, bold, mono)
+    ls = ' letter-spacing="%s"' % spacing if spacing else ""
+    a('<text x="%s" y="%s" font-family="%s" font-size="%s"%s fill="%s" text-anchor="%s"%s>%s</text>'
+      % (x, y, MONO if mono else SANS, size, ' font-weight="700"' if bold else "", color, anchor, ls, s))
+
+
+def panel(x, y, w, h, n, title, k):
+    a('<rect x="%s" y="%s" width="%s" height="%s" rx="14" fill="%s" stroke="%s" stroke-opacity="0.35"/>' % (x, y, w, h, TINT[k], C[k]))
+    a('<circle cx="%s" cy="%s" r="11" fill="%s"/>' % (x + 24, y + 26, C[k]))
+    text(x + 24, y + 30.5, n, 12, "#fff", True, anchor="middle")
+    text(x + 43, y + 30.5, title, 12, C[k], True, maxw=w - 60, spacing=1.1)
+
+
+def card(x, y, w, h, title, subs, k, mono=True, fill="#fff"):
+    a('<rect x="%s" y="%s" width="%s" height="%s" rx="9" fill="%s" stroke="%s" stroke-opacity="0.5" filter="url(#sh)"/>' % (x, y, w, h, fill, C[k]))
+    a('<rect x="%s" y="%s" width="4" height="%s" rx="2" fill="%s"/>' % (x + 1, y + 9, h - 18, C[k]))
+    inner = w - 32
+    if subs:
+        text(x + 16, y + 22, title, 14, INK, True, mono, maxw=inner)
+        for i, s in enumerate(subs):
+            text(x + 16, y + 39 + i * 15, s, 12, MUTED, maxw=inner)
+    else:
+        text(x + 16, y + h / 2 + 5, title, 14, INK, True, mono, maxw=inner)
+
+
+def pill(x, y, w, h, label, k, solid=False):
+    if solid:
+        a('<rect x="%s" y="%s" width="%s" height="%s" rx="%s" fill="%s" filter="url(#sh)"/>' % (x, y, w, h, h / 2, C[k]))
+        text(x + w / 2, y + h / 2 + 5, label, 13.5, "#fff", True, anchor="middle", maxw=w - 24)
+    else:
+        a('<rect x="%s" y="%s" width="%s" height="%s" rx="%s" fill="#fff" stroke="%s" stroke-dasharray="4 3"/>' % (x, y, w, h, h / 2, C[k]))
+        text(x + w / 2, y + h / 2 + 4.5, label, 12, MUTED, anchor="middle", maxw=w - 24)
+
+
+def arrow(d, k=None, dash=False):
+    col = C[k] if k else LINE
+    m = "m_" + (k or "n")
+    a('<path d="%s" fill="none" stroke="%s" stroke-width="1.6"%s stroke-linejoin="round" marker-end="url(#%s)"/>'
+      % (d, col, ' stroke-dasharray="5 4"' if dash else "", m))
+
+
+# ---------- canvas ----------
+a('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" '
+  'aria-label="Delivery cycle: refine, build and evaluate, run at scale, ship, investigate with data, foundations">' % (W, H, W, H))
+defs = ['<filter id="sh" x="-5%" y="-10%" width="110%" height="130%"><feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="#1f2328" flood-opacity="0.08"/></filter>']
+for k, col in list(C.items()) + [("n", LINE)]:
+    defs.append('<marker id="m_%s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="%s"/></marker>' % (k, col))
+a("<defs>%s</defs>" % "".join(defs))
+a('<rect x="0.5" y="0.5" width="%d" height="%d" rx="18" fill="#FFFFFF" stroke="#D0D7DE"/>' % (W - 1, H - 1))
+text(32, 46, "Delivery cycle", 22, INK, True)
+text(32, 70, "From a vague ticket to a production release. Independent agents check the work; a person takes every irreversible step.", 13, MUTED, maxw=W - 64)
+
+PY, PH = 96, 340
+X1, W1 = 32, 250
+X2, W2 = 318, 440
+X3, W3 = 794, 454
+Y0 = PY + 54
+
+# ---------- 1 refine ----------
+panel(X1, PY, W1, PH, "1", "REFINE", "refine")
+ix, iw = X1 + 20, W1 - 40
+for i, label in enumerate(["Epic or feature", "Spec: agent drafts, you review", "Tickets: break the spec down"]):
+    y = Y0 + i * 46
+    pill(ix, y, iw, 32, label, "refine")
+    arrow("M%s %s V%s" % (ix + iw / 2, y + 33, y + 44), "refine")
+TR_Y = Y0 + 3 * 46
+card(ix, TR_Y, iw, 62, "ticket-refine", ["Spec + acceptance criteria", "You approve the summary"], "refine")
+text(X1 + W1 / 2, PY + PH - 18, "dashed: process step, no skill yet", 11, MUTED, anchor="middle", maxw=W1 - 24)
+
+# ---------- 2 build / evaluate ----------
+panel(X2, PY, W2, PH, "2", "BUILD, EVALUATE, IMPROVE", "build")
+bx, bw = X2 + 20, W2 - 60
+rows = [("implement-with-score-gate", ["Worktree, implement; a fresh subagent scores 0-10"]),
+        ("verify-against-criteria", ["Post-task hook: read-only verdict with evidence"]),
+        ("live-env-local-test", ["Post-task hook: real environment, local build"])]
+for i, (t, s) in enumerate(rows):
+    y = Y0 + i * 78
+    card(bx, y, bw, 58, t, s, "build")
+    if i:
+        arrow("M%s %s V%s" % (bx + bw / 2, y - 20 + 1, y - 2), "build")
+loop_x = bx + bw + 12
+arrow("M%s %s H%s V%s H%s" % (bx + bw, Y0 + 78 + 29, loop_x, Y0 + 29, bx + bw + 2), "build", dash=True)
+text(X2 + W2 / 2, PY + PH - 36, "Not passing: findings go back to the implementer,", 11.5, C["build"], anchor="middle", maxw=W2 - 30)
+text(X2 + W2 / 2, PY + PH - 20, "and every round gets a new scorer.", 11.5, C["build"], anchor="middle", maxw=W2 - 30)
+# refine -> build
+arrow("M%s %s H%s V%s H%s" % (ix + iw, TR_Y + 31, X1 + W1 + 18, Y0 + 29, bx - 2), "refine")
+
+# ---------- 4 ship ----------
+panel(X3, PY, W3, PH, "4", "SHIP", "ship")
+sx, sw = X3 + 20, W3 - 40
+card(sx, Y0, sw, 62, "Before merge: private environment",
+     ["Branch build in a short-lived Kubernetes pod", "run-e2e-automation, plus manual QA by people"], "ship", mono=False)
+MP_Y = Y0 + 76
+pill(sx, MP_Y, sw, 34, "You review and merge the PR", "ship", solid=True)
+arrow("M%s %s V%s" % (sx + sw / 2, Y0 + 63, MP_Y - 2), "ship")
+half = (sw - 16) / 2
+C_Y = MP_Y + 46
+card(sx, C_Y, half, 58, "deploy-to-staging", ["Explicit tag, GitOps sync"], "ship")
+card(sx + half + 16, C_Y, half, 58, "run-e2e-automation", ["Suite again on staging"], "ship")
+arrow("M%s %s V%s H%s V%s" % (sx + sw / 2, MP_Y + 35, MP_Y + 42, sx + half / 2, C_Y - 2), "ship")
+arrow("M%s %s H%s" % (sx + half, C_Y + 29, sx + half + 14), "ship")
+D_Y = C_Y + 70
+card(sx, D_Y, sw, 50, "prod-release-gate", ["Stop after each step; canary go / no-go"], "ship")
+arrow("M%s %s V%s" % (sx + half + 16 + half / 2, C_Y + 59, D_Y - 2), "ship")
+text(X3 + W3 / 2, PY + PH - 18, "Only a clean run is released. People perform every production action.", 11, MUTED, anchor="middle", maxw=W3 - 24)
+# build -> ship
+arrow("M%s %s H%s V%s H%s" % (bx + bw, Y0 + 156 + 29, X2 + W2 + 18, Y0 + 31, sx - 2), "build")
+text(bx + bw + 6, Y0 + 156 + 22, "pass", 11, C["build"], True, maxw=40)
+
+# ---------- 3 scale ----------
+BY, BH = PY + PH + 22, 88
+a('<rect x="%s" y="%s" width="%s" height="%s" rx="14" fill="%s" stroke="%s" stroke-opacity="0.35"/>' % (X2, BY, W2, BH, TINT["scale"], C["scale"]))
+a('<circle cx="%s" cy="%s" r="11" fill="%s"/>' % (X2 + 24, BY + 26, C["scale"]))
+text(X2 + 24, BY + 30.5, "3", 12, "#fff", True, anchor="middle")
+text(X2 + 43, BY + 30.5, "RUN IT AT SCALE", 12, C["scale"], True, spacing=1.1)
+text(X2 + 20, BY + 56, "issue-batch-drain", 14, INK, True, True, maxw=W2 - 40)
+text(X2 + 20, BY + 74, "Each cluster: a fresh implementer runs box 2, then a fresh verifier.", 12, MUTED, maxw=W2 - 40)
+arrow("M%s %s V%s" % (X2 + W2 / 2, BY - 2, PY + PH + 3), "scale", dash=True)
+
+# ---------- 5 data ----------
+DY, DH = BY + BH + 22, 78
+a('<rect x="%s" y="%s" width="%s" height="%s" rx="14" fill="%s" stroke="%s" stroke-opacity="0.35"/>' % (32, DY, W - 64, DH, TINT["data"], C["data"]))
+a('<circle cx="56" cy="%s" r="11" fill="%s"/>' % (DY + 26, C["data"]))
+text(56, DY + 30.5, "5", 12, "#fff", True, anchor="middle")
+text(75, DY + 30.5, "INVESTIGATE WITH DATA", 12, C["data"], True, spacing=1.1)
+card(52, DY + 40, 150, 30, "log-analysis", None, "data")
+text(222, DY + 60, "debug  ·  size a change  ·  check an assumption  ·  evidence for specs  ·  baseline  ·  release watch  ·  A/B tests",
+     12.5, MUTED, maxw=W - 64 - 200)
+ax = X1 + W1 / 2
+arrow("M%s %s V%s" % (ax, DY - 2, PY + PH + 3), "data", dash=True)
+text(ax + 8, PY + PH + 50, "evidence for", 11, C["data"], True, maxw=X2 - ax - 16)
+text(ax + 8, PY + PH + 64, "specs and design", 11, C["data"], True, maxw=X2 - ax - 16)
+up_x, down_x = X3 + 120, X3 + 300
+arrow("M%s %s V%s" % (up_x, DY - 2, PY + PH + 3), "data", dash=True)
+text(up_x + 8, PY + PH + 50, "canary checks", 11, C["data"], True, maxw=down_x - up_x - 20)
+text(up_x + 8, PY + PH + 64, "and debugging", 11, C["data"], True, maxw=down_x - up_x - 20)
+arrow("M%s %s V%s" % (down_x, PY + PH + 3, DY - 2), "data", dash=True)
+text(down_x + 8, PY + PH + 50, "release watch", 11, C["data"], True, maxw=W - 32 - down_x - 16)
+text(down_x + 8, PY + PH + 64, "and A/B results", 11, C["data"], True, maxw=W - 32 - down_x - 16)
+
+# ---------- 6 foundations ----------
+FY, FH = DY + DH + 22, 78
+a('<rect x="%s" y="%s" width="%s" height="%s" rx="14" fill="%s" stroke="%s" stroke-opacity="0.35"/>' % (32, FY, W - 64, FH, TINT["base"], C["base"]))
+a('<circle cx="56" cy="%s" r="11" fill="%s"/>' % (FY + 26, C["base"]))
+text(56, FY + 30.5, "6", 12, "#fff", True, anchor="middle")
+text(75, FY + 30.5, "FOUNDATIONS", 12, C["base"], True, spacing=1.1)
+card(52, FY + 40, 120, 30, "wrap-up", None, "base")
+card(186, FY + 40, 250, 30, "agent-context-template", None, "base")
+text(456, FY + 60, "Every session ends by saving what worked as memory; every repo starts with the right rules.",
+     12.5, MUTED, maxw=W - 64 - 440)
+
+a("</svg>")
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cycle.svg")
+open(out, "w", encoding="utf-8").write("\n".join(o))
+if problems:
+    print("TEXT OVERFLOW:\n  " + "\n  ".join(problems))
+else:
+    print("all text fits")

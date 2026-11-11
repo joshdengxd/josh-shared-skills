@@ -30,9 +30,12 @@ Implement a task, then evaluate the result with independent subagents, and feed 
 | `issue-batch-drain` | Groups refined issues into PRs. For each group, one fresh implementer agent runs group 2's loop, then a separate fresh verifier agent checks it. One group at a time; the orchestrator keeps a running ledger. The user approves the plan. |
 
 ### 4. Ship
+Before the merge, a private environment is built from the branch; the automated suite runs there and people do manual QA. After the merge, the build goes to staging and the suite runs again. Only a clean run goes to production.
+
 | Skill | What it does |
 |---|---|
-| `deploy-to-staging` | Triggers a deploy workflow with an explicit tag and waits for the GitOps sync. The user confirms tag, environment and region. |
+| `deploy-to-staging` | Triggers a deploy workflow with an explicit tag and waits for the GitOps sync. Also builds a short-lived private environment from an unmerged branch. The user confirms tag, environment and region. |
+| `run-e2e-automation` | Runs the end-to-end suite on a chosen non-production environment, classifies each failure as real, flaky or environmental, and reports a verdict. |
 | `prod-release-gate` | Release checklist with a stop after every step, canary go/no-go from metrics and logs, rollback prepared first. A human performs every production action. |
 
 ### 5. Investigate with data
