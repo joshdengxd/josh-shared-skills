@@ -42,7 +42,7 @@ Read the project's `AGENTS.md` (section "Ticket workflow settings"): tracker and
    - scope and out of scope do not overlap with another ticket; dependencies point backwards only;
    - nothing contradicts the PRD; nothing is added that the PRD does not ask for.
 4. **Show** a table (number, title, depends on, criteria count) and the drafts. **Stop for approval.** Apply edits to the drafts and show them again.
-5. **Create** the approved tickets in dependency order. Replace `depends_on` draft numbers with real ticket references in the body ("Depends on #12", or the Jira key). Add the labels and put each ticket in Backlog. Write the new ticket number into the draft's `issue:` field.
+5. **Create** the approved tickets in dependency order (create any label that does not exist yet). Replace `depends_on` draft numbers with real ticket references in the body ("Depends on #12", or the Jira key). Add the labels and put each ticket in Backlog. Write the new ticket number into the draft's `issue:` field.
 6. **Report** the list of created tickets with links. Next: `refine-ticket` on the first ticket with no open dependencies.
 
 ## Rules
