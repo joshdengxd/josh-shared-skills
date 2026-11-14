@@ -7,7 +7,7 @@ description: Independent, read-only review that checks whether a branch delivers
 
 A second pair of eyes that never wrote the code. Intended to run as a **follow-up step**: when an implementation agent reports done, start this one in a fresh subagent. It reads and reports; it does not change anything.
 
-This is the code-level review. Behaviour is checked separately by `implement-with-verification-gate` (or `live-env-local-test`); this skill checks that the diff actually implements and tests each criterion.
+This is the code-level review. Behaviour is checked separately by `implement-and-verify-ticket` (or `live-env-local-test`); this skill checks that the diff actually implements and tests each criterion.
 
 ## Inputs
 - The ticket's acceptance criteria, the branch, and the branch it will merge into.

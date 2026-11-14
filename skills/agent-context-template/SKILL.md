@@ -34,6 +34,17 @@ Naming, error handling, testing. Current framework versions and the syntax to us
 ## Boundaries
 Never touch: generated files, migrations without review, production configs.
 
+## Ticket workflow settings
+(read by create-ticket, refine-ticket, implement-and-verify-ticket, land-ticket)
+- Tracker: GitHub issues in <owner/repo> (or Jira project <KEY>)
+- Default branch: main; merge method: squash
+- States: board <name/number> columns Backlog, Refined, In progress, In review, Done
+  (no board: labels refined, in-progress, in-review; Backlog = no label)
+- Labels: ticket, prd-NNNN
+- PRDs: docs/prd/NNNN-name.md; ticket drafts: drafts/tickets/ (git-ignored)
+- Checks: <type check>, <lint>, <unit>, <e2e>; run app: <command>
+- Deploy: <workflow> on merge to main -> <deployed URL>
+
 ## Context index
 See docs/context/INDEX.md
 ```
