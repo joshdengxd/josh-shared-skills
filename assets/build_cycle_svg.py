@@ -109,9 +109,9 @@ text(X1 + W1 / 2, PY + PH - 18, "dashed: process step, no skill yet", 11, MUTED,
 # ---------- 2 build / evaluate ----------
 panel(X2, PY, W2, PH, "2", "BUILD, EVALUATE, IMPROVE", "build")
 bx, bw = X2 + 20, W2 - 60
-rows = [("implement-with-score-gate", ["Worktree, implement; a fresh subagent scores 0-10"]),
-        ("verify-against-criteria", ["Post-task hook: read-only verdict with evidence"]),
-        ("live-env-local-test", ["Post-task hook: real environment, local build"])]
+rows = [("implement-with-verification-gate", ["Checks + e2e green; fresh agent checks each criterion"]),
+        ("verify-against-criteria", ["Follow-up: read-only code review, with evidence"]),
+        ("live-env-local-test", ["Follow-up: real environment, local build"])]
 for i, (t, s) in enumerate(rows):
     y = Y0 + i * 78
     card(bx, y, bw, 58, t, s, "build")
@@ -120,7 +120,7 @@ for i, (t, s) in enumerate(rows):
 loop_x = bx + bw + 12
 arrow("M%s %s H%s V%s H%s" % (bx + bw, Y0 + 78 + 29, loop_x, Y0 + 29, bx + bw + 2), "build", dash=True)
 text(X2 + W2 / 2, PY + PH - 36, "Not passing: findings go back to the implementer,", 11.5, C["build"], anchor="middle", maxw=W2 - 30)
-text(X2 + W2 / 2, PY + PH - 20, "and every round gets a new scorer.", 11.5, C["build"], anchor="middle", maxw=W2 - 30)
+text(X2 + W2 / 2, PY + PH - 20, "and every round gets a new verifier.", 11.5, C["build"], anchor="middle", maxw=W2 - 30)
 # refine -> build
 arrow("M%s %s H%s V%s H%s" % (ix + iw, TR_Y + 31, X1 + W1 + 18, Y0 + 29, bx - 2), "refine")
 

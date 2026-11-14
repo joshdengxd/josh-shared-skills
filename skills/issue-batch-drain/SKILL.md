@@ -15,8 +15,8 @@ An orchestration pattern for clearing many small, already-refined issues without
 
 ## Execute
 Take the approved clusters one at a time, never in parallel:
-1. Start a fresh **implementer** subagent for the cluster. It works in its own worktree and opens a PR (`implement-with-score-gate` is a good fit if installed).
-2. Start a different fresh **verifier** subagent for that PR (`verify-against-criteria` if installed).
+1. Start a fresh **implementer** subagent for the cluster. It works in its own worktree, implements and runs the checks (steps 1-3 of `implement-with-verification-gate` if installed).
+2. Start a different fresh **verifier** subagent for that branch (step 4 of `implement-with-verification-gate`, plus `verify-against-criteria` if installed). The orchestrator starts it, because a subagent usually cannot start its own. On failure, send the findings to a new implementer and repeat, within the fix-round limit; on success, the implementer opens the PR.
 3. Add one row to the ledger: cluster, PR link, verdict, open remarks. The orchestrator carries nothing else forward.
 
 ## If a cluster stalls

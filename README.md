@@ -18,11 +18,11 @@ Implement a task, then evaluate the result with independent subagents, and feed 
 
 | Skill | Role in the loop |
 |---|---|
-| `implement-with-score-gate` | Implements in a worktree; a fresh subagent gives a 0-10 score and a problem list; fix and re-score with a new subagent until the pass line is reached; opens a PR. The score and the pass line are set by the user per task; there is no fixed rubric. |
-| `verify-against-criteria` | Evaluation: read-only verdict (PASS / PASS-with-remarks / GAPS / DEFECTS) with evidence per acceptance criterion. |
+| `implement-with-verification-gate` | Implements in a worktree. Gate: type check, lint, unit tests and the e2e tests covering the change pass, and a fresh subagent checks every acceptance criterion with evidence: in a browser (Chrome DevTools MCP) where it can be seen, otherwise by a test or API call. Fix and re-verify with a new subagent until it passes; opens a PR. |
+| `verify-against-criteria` | Evaluation: read-only code review of the diff, verdict (PASS / PASS-with-remarks / GAPS / DEFECTS) with evidence per acceptance criterion. |
 | `live-env-local-test` | Evaluation: routes chosen requests from a real non-production environment to the local server and checks the flow in the browser (Chrome DevTools MCP). |
 
-`verify-against-criteria` and `live-env-local-test` run as a **post-task hook in a separate subagent**: the implementer finishes, a fresh agent that never saw its reasoning checks the result.
+`verify-against-criteria` and `live-env-local-test` run as a **follow-up step in a separate subagent**: the implementer finishes, a fresh agent that never saw its reasoning checks the result.
 
 ### 3. Run it at scale
 | Skill | What it does |
@@ -57,6 +57,18 @@ Before the merge, a private environment is built from the branch; the automated 
 4. **Compact orchestration.** Orchestrators plan and keep a ledger; subagents do the work.
 5. **Evidence over opinion.** Decisions come with queries, counts and charts.
 6. **Memory of what worked.** `wrap-up` captures the successful path.
+7. **Small tickets.** Refinement splits work until each ticket can be implemented and verified in one sitting. Together with bounded loops, that keeps each run short and its cost predictable.
+
+## Trust ladder
+
+Today a person confirms every irreversible step, and the agents do the work in between. A step moves up a rung only after the team has a record of its gate being reliable:
+
+1. **Agent proposes, person does.** Production actions today.
+2. **Agent does, person approves each result.** Merges and ticket comments today.
+3. **Agent does, person samples.** Candidates: low-risk tickets whose checks and browser verification are green.
+4. **Agent does, person is told.** Only for steps with a long clean record and a cheap undo.
+
+Moving a step up is a team decision that changes the skill's own rules (for example "merge is always a human action"), never something an agent decides for itself.
 
 ## Install
 

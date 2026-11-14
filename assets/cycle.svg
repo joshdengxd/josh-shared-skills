@@ -28,21 +28,21 @@
 <text x="361" y="126.5" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#1F6FEB" text-anchor="start" letter-spacing="1.1">BUILD, EVALUATE, IMPROVE</text>
 <rect x="338" y="150" width="380" height="58" rx="9" fill="#fff" stroke="#1F6FEB" stroke-opacity="0.5" filter="url(#sh)"/>
 <rect x="339" y="159" width="4" height="40" rx="2" fill="#1F6FEB"/>
-<text x="354" y="172" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#1f2328" text-anchor="start">implement-with-score-gate</text>
-<text x="354" y="189" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Worktree, implement; a fresh subagent scores 0-10</text>
+<text x="354" y="172" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#1f2328" text-anchor="start">implement-with-verification-gate</text>
+<text x="354" y="189" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Checks + e2e green; fresh agent checks each criterion</text>
 <rect x="338" y="228" width="380" height="58" rx="9" fill="#fff" stroke="#1F6FEB" stroke-opacity="0.5" filter="url(#sh)"/>
 <rect x="339" y="237" width="4" height="40" rx="2" fill="#1F6FEB"/>
 <text x="354" y="250" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#1f2328" text-anchor="start">verify-against-criteria</text>
-<text x="354" y="267" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Post-task hook: read-only verdict with evidence</text>
+<text x="354" y="267" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Follow-up: read-only code review, with evidence</text>
 <path d="M528.0 209 V226" fill="none" stroke="#1F6FEB" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#m_build)"/>
 <rect x="338" y="306" width="380" height="58" rx="9" fill="#fff" stroke="#1F6FEB" stroke-opacity="0.5" filter="url(#sh)"/>
 <rect x="339" y="315" width="4" height="40" rx="2" fill="#1F6FEB"/>
 <text x="354" y="328" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#1f2328" text-anchor="start">live-env-local-test</text>
-<text x="354" y="345" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Post-task hook: real environment, local build</text>
+<text x="354" y="345" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Follow-up: real environment, local build</text>
 <path d="M528.0 287 V304" fill="none" stroke="#1F6FEB" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#m_build)"/>
 <path d="M718 257 H730 V179 H720" fill="none" stroke="#1F6FEB" stroke-width="1.6" stroke-dasharray="5 4" stroke-linejoin="round" marker-end="url(#m_build)"/>
 <text x="538.0" y="400" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="11.5" fill="#1F6FEB" text-anchor="middle">Not passing: findings go back to the implementer,</text>
-<text x="538.0" y="416" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="11.5" fill="#1F6FEB" text-anchor="middle">and every round gets a new scorer.</text>
+<text x="538.0" y="416" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="11.5" fill="#1F6FEB" text-anchor="middle">and every round gets a new verifier.</text>
 <path d="M262 319 H300 V179 H336" fill="none" stroke="#E36209" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#m_refine)"/>
 <rect x="794" y="96" width="454" height="340" rx="14" fill="#F8F5FF" stroke="#6B4FBB" stroke-opacity="0.35"/>
 <circle cx="818" cy="122" r="11" fill="#6B4FBB"/>

@@ -5,7 +5,9 @@ description: Independent, read-only review that checks whether a branch delivers
 
 # Verify Against Criteria
 
-A second pair of eyes that never wrote the code. Intended to run as a **post-task hook**: when an implementation agent reports done, start this one in a fresh subagent. It reads and reports; it does not change anything.
+A second pair of eyes that never wrote the code. Intended to run as a **follow-up step**: when an implementation agent reports done, start this one in a fresh subagent. It reads and reports; it does not change anything.
+
+This is the code-level review. Behaviour is checked separately by `implement-with-verification-gate` (or `live-env-local-test`); this skill checks that the diff actually implements and tests each criterion.
 
 ## Inputs
 - The ticket's acceptance criteria, the branch, and the branch it will merge into.
@@ -32,5 +34,7 @@ Then scan the diff for loose ends the criteria did not mention: renamed things s
 1. One-line verdict.
 2. Table: criterion, evidence, status.
 3. The shortest list of changes that would turn the verdict into PASS.
+
+Every GAPS or DEFECTS finding points to a file and line, or to a test or command whose output shows the problem. A suspicion without evidence goes under remarks, not into the verdict.
 
 Never edit files, push, or post comments.

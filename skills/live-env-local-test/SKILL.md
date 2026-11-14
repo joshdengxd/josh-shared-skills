@@ -5,7 +5,7 @@ description: Check a local change inside a real non-production environment by se
 
 # Live Environment Local Test
 
-Run your local build as part of a real environment without deploying it. Designed as a **post-task check**: after an agent implements a change, a separate subagent proves the user-visible behaviour in a browser.
+Run your local build as part of a real environment without deploying it. Designed as a **follow-up check**: after an agent implements a change, a separate subagent checks the user-visible behaviour in a browser.
 
 ## Ground rules
 - Non-production environments only; refuse a production address.
