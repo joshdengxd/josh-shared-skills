@@ -70,6 +70,7 @@ Before the merge, a private environment is built from the branch; the automated 
 | Skill | What it does |
 |---|---|
 | `wrap-up` | Closes a session: saves the successful path as long-term memory so the next session follows it, updates docs, tidies, commits, reports. |
+| `current-docs` | Looks up the current docs for the installed version of each library and tool (Context7, bundled script or MCP) before code is written or approved; implementers follow them and reviewers flag deprecated or non-recommended use with the doc source. |
 | `agent-context-template` | An `AGENTS.md` and a small context index (progressive context discovery) so agents follow the project's architecture and current syntax. |
 
 ## Design principles
