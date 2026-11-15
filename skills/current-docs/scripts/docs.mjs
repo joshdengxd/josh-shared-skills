@@ -22,7 +22,7 @@ try {
       console.log(`${r.id}  | ${r.title} | updated ${String(r.lastUpdateDate).slice(0, 10)} | trust ${r.trustScore} | versions: ${versions || "-"}`);
     }
   } else if (cmd === "get" && a && b) {
-    // Git Bash rewrites "/owner/repo" into "C:/Program Files/Git/owner/repo"; undo that.
+    // Git Bash on Windows turns an id like "/owner/repo" into an absolute path under its install folder; undo that.
     const id = a.replace(/^[A-Za-z]:\/.*?\/Git\//, "").replace(/^\//, "");
     const version = flag("version");
     const path = version ? `${id}/${version}` : id;
