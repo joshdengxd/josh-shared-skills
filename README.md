@@ -14,7 +14,7 @@ Four skills carry one ticket from idea to review, with the same states everywher
 | Refined | `refine-ticket` |
 | In progress | `implement-and-verify-ticket`, when work starts (its PR uses `Refs #N`, never a closing keyword) |
 | In review | `land-ticket` (merged, deployed, re-checked; the person tries it) |
-| Done | a person, after trying it |
+| Done | a person, after trying it; or `land-ticket` directly, when the project sets "Landed tickets go to: Done" |
 
 What one stage hands the next:
 - **Refinement summary** (one comment per ticket): the only list of acceptance criteria. Each criterion has a phase, `local` (checked on the branch), `PR` (its CI run) or `deployed` (the live site), and is checkable read-only or names its probe. Changes to the live system (settings, rulesets, hosting) are **landing steps**, run by `land-ticket`, not by the implementer. Deferred work becomes new tickets in the same approval.
@@ -49,7 +49,7 @@ Implement a task, then evaluate the result with independent subagents, and feed 
 ### 3. Run it at scale
 | Skill | What it does |
 |---|---|
-| `drain-refined` | Unattended: takes every Refined ticket, groups compatible ones into PRs, and per group runs a fresh implementer, a fresh behaviour verifier and a fresh code reviewer, with bounded fix rounds, then opens the PR and runs `land-ticket`. One group at a time; the orchestrator keeps only a ledger. A group that cannot pass is split, then skipped with a comment; a failed landing stops the run. Starting it is the approval for its merges; tickets end in In review. |
+| `drain-refined` | Unattended: takes every Refined ticket, groups compatible ones into PRs, and per group runs a fresh implementer, a fresh behaviour verifier and a fresh code reviewer, with bounded fix rounds, then opens the PR and runs `land-ticket`. One group at a time; the orchestrator keeps only a ledger. A group that cannot pass is split, then skipped with a comment; a failed landing stops the run. Starting it is the approval for its merges; tickets end In review (or Done, per the project's setting). |
 
 ### 4. Ship
 Before the merge, a private environment is built from the branch; the automated suite runs there and people do manual QA. After the merge, the build goes to staging and the suite runs again. Only a clean run goes to production.
@@ -58,7 +58,7 @@ Before the merge, a private environment is built from the branch; the automated 
 |---|---|
 | `deploy-to-staging` | Triggers a deploy workflow with an explicit tag and waits for the GitOps sync. Also builds a short-lived private environment from an unmerged branch. The user confirms tag, environment and region. |
 | `run-e2e-automation` | Runs the end-to-end suite on a chosen non-production environment, classifies each failure as real, flaky or environmental, and reports a verdict. |
-| `land-ticket` | After the user says "land it": checks green and `PR` criteria hold, landing steps before merge, merge, confirm the merge, landing steps after merge, wait for the deploy, a fresh subagent checks the `deployed` criteria on the live site, ticket to In review with evidence and a checklist for the person. Never moves a ticket to Done. |
+| `land-ticket` | After the user says "land it": checks green and `PR` criteria hold, landing steps before merge, merge, confirm the merge, landing steps after merge, wait for the deploy, a fresh subagent checks the `deployed` criteria on the live site, ticket to In review with evidence and a checklist for the person, or closed as Done when the project chose that. |
 | `prod-release-gate` | Release checklist with a stop after every step, canary go/no-go from metrics and logs, rollback prepared first. A human performs every production action. |
 
 ### 5. Investigate with data
@@ -89,7 +89,7 @@ Today a person confirms every irreversible step, and the agents do the work in b
 
 1. **Agent proposes, person does.** Production actions today.
 2. **Agent does, person approves each result.** Merges (the request to land is the approval) and ticket summaries (shown before posting) today.
-3. **Agent does, person samples.** `drain-refined`: merges of tickets whose checks, browser verification and code review are green; the person tries each one in In review.
+3. **Agent does, person samples.** `drain-refined`: merges of tickets whose checks, browser verification and code review are green; the person tries each one in In review, or samples them when the project lets landed tickets go straight to Done.
 4. **Agent does, person is told.** Only for steps with a long clean record and a cheap undo.
 
 Moving a step up is a team decision that changes the skill's own rules (for example "merge is always a human decision"), never something an agent decides for itself.

@@ -155,7 +155,7 @@ a('<circle cx="%s" cy="%s" r="11" fill="%s"/>' % (X2 + 24, BY + 26, C["scale"]))
 text(X2 + 24, BY + 30.5, "3", 12, "#fff", True, anchor="middle")
 text(X2 + 43, BY + 30.5, "RUN IT AT SCALE", 12, C["scale"], True, spacing=1.1)
 text(X2 + 20, BY + 56, "drain-refined", 14, INK, True, True, maxw=W2 - 40)
-text(X2 + 20, BY + 74, "Unattended: each group runs box 2, then land-ticket; tickets end In review.", 12, MUTED, maxw=W2 - 40)
+text(X2 + 20, BY + 74, "Unattended: each group runs box 2, then land-ticket.", 12, MUTED, maxw=W2 - 40)
 arrow("M%s %s V%s" % (X2 + W2 / 2, BY - 2, PY + PH + 3), "scale", dash=True)
 
 # ---------- 5 data ----------

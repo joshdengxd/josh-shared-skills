@@ -80,7 +80,7 @@
 <text x="342" y="488.5" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">3</text>
 <text x="361" y="488.5" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#0E8A8A" text-anchor="start" letter-spacing="1.1">RUN IT AT SCALE</text>
 <text x="338" y="514" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#1f2328" text-anchor="start">drain-refined</text>
-<text x="338" y="532" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Unattended: each group runs box 2, then land-ticket; tickets end In review.</text>
+<text x="338" y="532" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Unattended: each group runs box 2, then land-ticket.</text>
 <path d="M538.0 456 V439" fill="none" stroke="#0E8A8A" stroke-width="1.6" stroke-dasharray="5 4" stroke-linejoin="round" marker-end="url(#m_scale)"/>
 <rect x="32" y="568" width="1216" height="78" rx="14" fill="#F2FBF4" stroke="#2EA44F" stroke-opacity="0.35"/>
 <circle cx="56" cy="594" r="11" fill="#2EA44F"/>
