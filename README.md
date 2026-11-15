@@ -16,6 +16,13 @@ Four skills carry one ticket from idea to review, with the same states everywher
 | In review | `land-ticket` (merged, deployed, re-checked; the person tries it) |
 | Done | a person, after trying it |
 
+What one stage hands the next:
+- **Refinement summary** (one comment per ticket): the only list of acceptance criteria. Each criterion has a phase, `local` (checked on the branch), `PR` (its CI run) or `deployed` (the live site), and is checkable read-only or names its probe. Changes to the live system (settings, rulesets, hosting) are **landing steps**, run by `land-ticket`, not by the implementer. Deferred work becomes new tickets in the same approval.
+- **PR**: title ends `(#N)`, body has `Refs #N`, the criteria table with evidence, the code-review verdict and the landing steps.
+- **Landing comment**: PR, deploy run, deployed checks, a checklist for the person.
+
+Going back: review changes stay In progress and the next implement run continues on the PR; a closed PR or a revert sends the ticket to Refined; a problem found in review sends it to In progress (small fix) or Refined (plan changes), with a comment. `implement-and-verify-ticket` has the full table.
+
 Asking an agent to implement or land a ticket (or starting `drain-refined`) is the approval for that stage's state moves and its landing comment; anything else posted on a ticket (new tickets, refinement summaries) is shown to the user first. The skills stay generic. Each project states its own settings in `AGENTS.md` under "Ticket workflow settings" (tracker, default branch, board or labels, commands, deploy); `agent-context-template` has the block.
 
 ## Skill groups
@@ -26,15 +33,15 @@ Flow: an epic or feature is turned into a spec or PRD (the agent drafts, you rev
 | Skill | What it does |
 |---|---|
 | `create-ticket` | Splits a PRD (or one request) into tickets with a fixed format, checkable acceptance criteria and dependencies. Drafts locally; creates them in the tracker, in dependency order, only after the user approves. Re-runs skip tickets already created. |
-| `refine-ticket` | Refines a ticket with the user into an implementation-ready spec. One consensus comment, updated on re-run. The user approves before anything is posted; then the ticket moves to Refined. |
+| `refine-ticket` | Refines a ticket with the user into an implementation-ready spec. One consensus comment, updated on re-run: criteria with phases, landing steps, out of scope. Deferred work becomes new tickets and PRD changes are proposed in the same approval. The user approves before anything is posted; then the ticket moves to Refined. |
 
 ### 2. Build, evaluate, improve
 Implement a task, then evaluate the result with independent subagents, and feed the findings back until it passes. The implementer never grades itself.
 
 | Skill | Role in the loop |
 |---|---|
-| `implement-and-verify-ticket` | Implements in a worktree. Gate: type check, lint, unit tests and the e2e tests covering the change pass, and a fresh subagent checks every acceptance criterion with evidence: in a browser (Chrome DevTools MCP) where it can be seen, otherwise by a test or API call. Fix and re-verify with a new subagent until it passes; opens a PR. |
-| `verify-against-criteria` | Evaluation: read-only code review of the diff, verdict (PASS / PASS-with-remarks / GAPS / DEFECTS) with evidence per acceptance criterion. |
+| `implement-and-verify-ticket` | Implements in a worktree (or continues an open PR after review). Gate: type check, lint, unit tests and the e2e tests covering the change pass; a fresh subagent checks every `local` criterion with evidence, in a browser (Chrome DevTools MCP) where it can be seen, otherwise by a test or command; a second fresh subagent runs `verify-against-criteria`. Fix and re-verify with new subagents until both pass; opens a PR. |
+| `verify-against-criteria` | Evaluation: read-only code review of the diff, verdict (PASS / PASS-with-remarks / GAPS / DEFECTS) with evidence per acceptance criterion; criteria the diff cannot implement (settings, live site) are n/a. |
 | `live-env-local-test` | Evaluation: routes chosen requests from a real non-production environment to the local server and checks the flow in the browser (Chrome DevTools MCP). |
 
 `verify-against-criteria` and `live-env-local-test` run as a **follow-up step in a separate subagent**: the implementer finishes, a fresh agent that never saw its reasoning checks the result.
@@ -51,7 +58,7 @@ Before the merge, a private environment is built from the branch; the automated 
 |---|---|
 | `deploy-to-staging` | Triggers a deploy workflow with an explicit tag and waits for the GitOps sync. Also builds a short-lived private environment from an unmerged branch. The user confirms tag, environment and region. |
 | `run-e2e-automation` | Runs the end-to-end suite on a chosen non-production environment, classifies each failure as real, flaky or environmental, and reports a verdict. |
-| `land-ticket` | After the user says "land it": checks green, merge, confirm the merge, wait for the deploy, a fresh subagent re-checks the criteria on the deployed site, ticket to In review with evidence and a checklist for the person. Never moves a ticket to Done. |
+| `land-ticket` | After the user says "land it": checks green and `PR` criteria hold, landing steps before merge, merge, confirm the merge, landing steps after merge, wait for the deploy, a fresh subagent checks the `deployed` criteria on the live site, ticket to In review with evidence and a checklist for the person. Never moves a ticket to Done. |
 | `prod-release-gate` | Release checklist with a stop after every step, canary go/no-go from metrics and logs, rollback prepared first. A human performs every production action. |
 
 ### 5. Investigate with data
