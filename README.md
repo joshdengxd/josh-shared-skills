@@ -16,7 +16,7 @@ Four skills carry one ticket from idea to review, with the same states everywher
 | In review | `land-ticket` (merged, deployed, re-checked; the person tries it) |
 | Done | a person, after trying it |
 
-Asking an agent to implement or land a ticket is the approval for that stage's state moves and its landing comment; anything else posted on a ticket (new tickets, refinement summaries) is shown to the user first. The skills stay generic. Each project states its own settings in `AGENTS.md` under "Ticket workflow settings" (tracker, default branch, board or labels, commands, deploy); `agent-context-template` has the block.
+Asking an agent to implement or land a ticket (or starting `drain-refined`) is the approval for that stage's state moves and its landing comment; anything else posted on a ticket (new tickets, refinement summaries) is shown to the user first. The skills stay generic. Each project states its own settings in `AGENTS.md` under "Ticket workflow settings" (tracker, default branch, board or labels, commands, deploy); `agent-context-template` has the block.
 
 ## Skill groups
 
@@ -42,7 +42,7 @@ Implement a task, then evaluate the result with independent subagents, and feed 
 ### 3. Run it at scale
 | Skill | What it does |
 |---|---|
-| `issue-batch-drain` | Groups refined issues into PRs. For each group, one fresh implementer agent runs group 2's loop, then a separate fresh verifier agent checks it. One group at a time; the orchestrator keeps a running ledger. The user approves the plan. |
+| `drain-refined` | Unattended: takes every Refined ticket, groups compatible ones into PRs, and per group runs a fresh implementer, a fresh behaviour verifier and a fresh code reviewer, with bounded fix rounds, then opens the PR and runs `land-ticket`. One group at a time; the orchestrator keeps only a ledger. A group that cannot pass is split, then skipped with a comment; a failed landing stops the run. Starting it is the approval for its merges; tickets end in In review. |
 
 ### 4. Ship
 Before the merge, a private environment is built from the branch; the automated suite runs there and people do manual QA. After the merge, the build goes to staging and the suite runs again. Only a clean run goes to production.
@@ -68,7 +68,7 @@ Before the merge, a private environment is built from the branch; the automated 
 ## Design principles
 
 1. **Producer is not the checker.** Every gate runs in a fresh context.
-2. **Human on the irreversible step.** Merge, production actions, and new content posted on a ticket (tickets, refinement summaries).
+2. **Human on the irreversible step.** Merge (asked for, or approved by starting `drain-refined`), production actions, and new content posted on a ticket (tickets, refinement summaries).
 3. **Bounded loops.** A few fix rounds, then a human decides.
 4. **Compact orchestration.** Orchestrators plan and keep a ledger; subagents do the work.
 5. **Evidence over opinion.** Decisions come with queries, counts and charts.
@@ -81,7 +81,7 @@ Today a person confirms every irreversible step, and the agents do the work in b
 
 1. **Agent proposes, person does.** Production actions today.
 2. **Agent does, person approves each result.** Merges (the request to land is the approval) and ticket summaries (shown before posting) today.
-3. **Agent does, person samples.** Candidates: low-risk tickets whose checks and browser verification are green.
+3. **Agent does, person samples.** `drain-refined`: merges of tickets whose checks, browser verification and code review are green; the person tries each one in In review.
 4. **Agent does, person is told.** Only for steps with a long clean record and a cheap undo.
 
 Moving a step up is a team decision that changes the skill's own rules (for example "merge is always a human decision"), never something an agent decides for itself.
