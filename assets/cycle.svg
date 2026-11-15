@@ -2,7 +2,7 @@
 <defs><filter id="sh" x="-5%" y="-10%" width="110%" height="130%"><feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="#1f2328" flood-opacity="0.08"/></filter><marker id="m_refine" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E36209"/></marker><marker id="m_build" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1F6FEB"/></marker><marker id="m_scale" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0E8A8A"/></marker><marker id="m_ship" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6B4FBB"/></marker><marker id="m_data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2EA44F"/></marker><marker id="m_base" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#57606a"/></marker><marker id="m_n" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8c959f"/></marker></defs>
 <rect x="0.5" y="0.5" width="1279" height="779" rx="18" fill="#FFFFFF" stroke="#D0D7DE"/>
 <text x="32" y="46" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="22" font-weight="700" fill="#1f2328" text-anchor="start">Delivery cycle</text>
-<text x="32" y="70" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#57606a" text-anchor="start">From a vague ticket to a production release. Independent agents check the work; a person takes every irreversible step.</text>
+<text x="32" y="70" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#57606a" text-anchor="start">From a vague ticket to a production release. Independent agents, code and tests verify the work; a person takes the irreversible steps.</text>
 <rect x="32" y="96" width="250" height="340" rx="14" fill="#FFF8F2" stroke="#E36209" stroke-opacity="0.35"/>
 <circle cx="56" cy="122" r="11" fill="#E36209"/>
 <text x="56" y="126.5" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">1</text>
@@ -11,7 +11,7 @@
 <text x="157.0" y="170.5" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="middle">Epic or feature</text>
 <path d="M157.0 183 V194" fill="none" stroke="#E36209" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#m_refine)"/>
 <rect x="52" y="196" width="210" height="32" rx="16.0" fill="#fff" stroke="#E36209" stroke-dasharray="4 3"/>
-<text x="157.0" y="216.5" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="middle">Spec: agent drafts, you review</text>
+<text x="157.0" y="216.5" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="middle">Spec: agent drafts, you approve</text>
 <path d="M157.0 229 V240" fill="none" stroke="#E36209" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#m_refine)"/>
 <rect x="52" y="242" width="210" height="32" rx="9" fill="#fff" stroke="#E36209" stroke-opacity="0.5" filter="url(#sh)"/>
 <rect x="53" y="251" width="4" height="14" rx="2" fill="#E36209"/>
@@ -55,7 +55,7 @@
 <text x="830" y="189" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">Branch build in a short-lived Kubernetes pod</text>
 <text x="830" y="204" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#57606a" text-anchor="start">run-e2e-automation, plus manual QA by people</text>
 <rect x="814" y="226" width="414" height="34" rx="17.0" fill="#6B4FBB" filter="url(#sh)"/>
-<text x="1021.0" y="248.0" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="700" fill="#fff" text-anchor="middle">You approve; land-ticket merges and re-checks</text>
+<text x="1021.0" y="248.0" font-family="Inter,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" font-weight="700" fill="#fff" text-anchor="middle">On land request: merge, deploy, re-check</text>
 <path d="M1021.0 213 V224" fill="none" stroke="#6B4FBB" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#m_ship)"/>
 <rect x="814" y="272" width="199.0" height="58" rx="9" fill="#fff" stroke="#6B4FBB" stroke-opacity="0.5" filter="url(#sh)"/>
 <rect x="815" y="281" width="4" height="40" rx="2" fill="#6B4FBB"/>

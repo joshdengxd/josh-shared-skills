@@ -87,7 +87,7 @@ for k, col in list(C.items()) + [("n", LINE)]:
 a("<defs>%s</defs>" % "".join(defs))
 a('<rect x="0.5" y="0.5" width="%d" height="%d" rx="18" fill="#FFFFFF" stroke="#D0D7DE"/>' % (W - 1, H - 1))
 text(32, 46, "Delivery cycle", 22, INK, True)
-text(32, 70, "From a vague ticket to a production release. Independent agents check the work; a person takes every irreversible step.", 13, MUTED, maxw=W - 64)
+text(32, 70, "From a vague ticket to a production release. Independent agents, code and tests verify the work; a person takes the irreversible steps.", 13, MUTED, maxw=W - 64)
 
 PY, PH = 96, 340
 X1, W1 = 32, 250
@@ -98,7 +98,7 @@ Y0 = PY + 54
 # ---------- 1 refine ----------
 panel(X1, PY, W1, PH, "1", "REFINE", "refine")
 ix, iw = X1 + 20, W1 - 40
-for i, label in enumerate(["Epic or feature", "Spec: agent drafts, you review"]):
+for i, label in enumerate(["Epic or feature", "Spec: agent drafts, you approve"]):
     y = Y0 + i * 46
     pill(ix, y, iw, 32, label, "refine")
     arrow("M%s %s V%s" % (ix + iw / 2, y + 33, y + 44), "refine")
@@ -132,7 +132,7 @@ sx, sw = X3 + 20, W3 - 40
 card(sx, Y0, sw, 62, "Before merge: private environment",
      ["Branch build in a short-lived Kubernetes pod", "run-e2e-automation, plus manual QA by people"], "ship", mono=False)
 MP_Y = Y0 + 76
-pill(sx, MP_Y, sw, 34, "You approve; land-ticket merges and re-checks", "ship", solid=True)
+pill(sx, MP_Y, sw, 34, "On land request: merge, deploy, re-check", "ship", solid=True)
 arrow("M%s %s V%s" % (sx + sw / 2, Y0 + 63, MP_Y - 2), "ship")
 half = (sw - 16) / 2
 C_Y = MP_Y + 46
